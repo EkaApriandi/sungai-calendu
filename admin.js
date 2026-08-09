@@ -439,6 +439,9 @@ function ubahStatusLaporan(rowNum, currentStatus) {
 
         fetch(scriptURL, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
             body: JSON.stringify({ action: 'updateStatus', row: rowNum, status: newStatus })
         })
         .then(res => res.json())
@@ -734,6 +737,9 @@ function uploadFoto() {
 
         fetch(scriptURL, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
             body: JSON.stringify(payload)
         })
         .then(res => res.json())
@@ -881,6 +887,9 @@ function confirmHapusFoto(fileUrl, fileName, rowId) {
         // 4. Kirim sinyal hapus ke Google Apps Script backend
         fetch(scriptURL, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
             body: JSON.stringify({ action: 'deleteGaleri', row: rowId, url: fileUrl, fileName: fileName })
         }).catch(e => console.log('Hapus foto di memori lokal diselesaikan'));
 
