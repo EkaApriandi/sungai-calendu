@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sungai Calendu | Kelurahan Onto, Bantaeng</title>
+    <meta name="description" content="Informasi resmi dan saluran aspirasi laporan warga untuk kawasan Sungai Calendu, Kelurahan Onto, Kecamatan Bantaeng, Kabupaten Bantaeng.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- File CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Announcement Bar (Dynamic from Admin) -->
+    <div id="announcement-bar" class="announcement-bar hidden">
+        <div class="container announcement-content">
+            <span class="announcement-tag"><i class="fa-solid fa-bullhorn"></i> Pengumuman</span>
+            <span id="announcement-text" class="announcement-text"></span>
+            <button id="close-announcement" class="close-announcement" aria-label="Tutup Pengumuman">&times;</button>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar-header" id="navbar-header">
+        <div class="nav-container">
+            <a href="#beranda" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-water"></i></div>
+                <div class="logo-wrapper">
+                    <span class="logo-text">Sungai <span>Calendu</span></span>
+                    <span class="logo-subtext">Kelurahan Onto, Bantaeng</span>
+                </div>
+            </a>
+            
+            <nav class="nav-menu" id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="#beranda" class="nav-link active"><i class="fa-solid fa-house"></i> Beranda</a></li>
+                    <li><a href="#tentang" class="nav-link"><i class="fa-solid fa-compass"></i> Tentang</a></li>
+                    <li><a href="#kondisi" class="nav-link"><i class="fa-solid fa-list-check"></i> Kondisi</a></li>
+                    <li><a href="#galeri" class="nav-link"><i class="fa-solid fa-images"></i> Galeri</a></li>
+                    <li><a href="#lokasi" class="nav-link"><i class="fa-solid fa-location-dot"></i> Lokasi</a></li>
+                    <li><a href="#laporan" class="nav-link btn-nav-lapor"><i class="fa-solid fa-paper-plane"></i> Lapor Warga</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="admin.html" target="_blank" class="btn-admin-link" title="Portal Admin">
+                    <i class="fa-solid fa-user-shield"></i> <span>Admin</span>
+                </a>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu Navigasi">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="hero">
+        <!-- Video Background -->
+        <video autoplay loop muted playsinline class="video-bg">
+            <source src="assets/images/hero-video.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Overlay Dark Gradient -->
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-tree"></i> Kelurahan Onto, Bantaeng
+            </div>
+            <h1>Sungai <span class="highlight-text">Calendu</span></h1>
+            <p>Informasi kawasan dan lingkungan Sungai Calendu di Kelurahan Onto, Kecamatan Bantaeng, Kabupaten Bantaeng.</p>
+
+            <!-- Quick Stat Highlights -->
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <i class="fa-solid fa-droplet"></i>
+                    <div class="stat-info">
+                        <h4>Air Alami</h4>
+                        <p>Sumber Pegunungan</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-location-pin"></i>
+                    <div class="stat-info">
+                        <h4>Kel. Onto</h4>
+                        <p>Kec. Bantaeng</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fa-solid fa-leaf"></i>
+                    <div class="stat-info">
+                        <h4>Lingkungan</h4>
+                        <p>Area Terbuka</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Tentang -->
+    <section id="tentang" class="section tentang-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"><i class="fa-solid fa-circle-info"></i> Tentang Sungai Calendu</span>
+                <h2 class="section-title">Gambaran Umum Sungai Calendu</h2>
+                <div class="section-divider"></div>
+            </div>
+
+            <div class="tentang-grid">
+                <div class="tentang-video-wrapper">
+                    <video class="tentang-video" autoplay loop muted playsinline poster="assets/images/galeri1.jpg">
+                        <source src="assets/images/tentang-sungai.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-badge"><i class="fa-solid fa-video"></i> Suasana Aliran Sungai</div>
+                </div>
+
+                <div class="tentang-info">
+                    <h3>Sungai Calendu, Bantaeng</h3>
+                    <p class="lead-text">Sungai Calendu merupakan alur perairan alami yang membentang di wilayah Kelurahan Onto, Kecamatan Bantaeng, Kabupaten Bantaeng.</p>
+                    <p>Aliran air sungai ini bersumber langsung dari kawasan pegunungan Bantaeng dan mengalir membelah perbukitan serta area pemukiman warga setempat. Kawasan ini memiliki suasana yang hijau dan asri, yang sering dimanfaatkan warga sekitar untuk beraktivitas dan berkumpul.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Kondisi -->
+    <section id="kondisi" class="section fasilitas-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag"><i class="fa-solid fa-list-check"></i> Kondisi Wilayah</span>
+                <h2 class="section-title">Kondisi & Lingkungan Sungai Calendu</h2>
+                <p class="section-subtitle">Gambaran umum kondisi fisik, lingkungan, dan aksesibilitas kawasan Sungai Calendu di Kelurahan Onto.</p>
+                <div class="section-divider center"></div>
+            </div>
+
+            <div class="fasilitas-cards">
+                <div class="fasilitas-card">
+                    <div class="card-icon"><i class="fa-solid fa-water"></i></div>
+                    <h3>Aliran Air Pegunungan</h3>
+                    <p>Air sungai mengalir langsung dari kawasan pegunungan melewati celah bebatuan alami.</p>
+                </div>
+                <div class="fasilitas-card">
+                    <div class="card-icon"><i class="fa-solid fa-tree"></i></div>
+                    <h3>Kawasan Terbuka</h3>
+                    <p>Tepian sungai terbuka yang sering dimanfaatkan warga sekitar untuk berkumpul.</p>
+                </div>
+                <div class="fasilitas-card">
+                    <div class="card-icon"><i class="fa-solid fa-route"></i></div>
+                    <h3>Aksesibilitas</h3>
+                    <p>Berada di wilayah Kelurahan Onto dan dapat diakses menggunakan kendaraan roda dua maupun empat.</p>
+                </div>
+                <div class="fasilitas-card">
+                    <div class="card-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3>Kebersihan Bersama</h3>
+                    <p>Kawasan lingkungan publik yang dirawat dan dijaga kebersihannya secara gotong royong oleh warga.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Galeri Pesona -->
+    <section id="galeri" class="section galeri-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag"><i class="fa-solid fa-images"></i> Dokumentasi</span>
+                <h2 class="section-title">Galeri Sungai Calendu</h2>
+                <p class="section-subtitle">Dokumentasi foto asli suasana dan aliran Sungai Calendu.</p>
+                <div class="section-divider center"></div>
+            </div>
+
+            <div class="galeri-grid" id="galeri-container">
+                <div class="galeri-card" data-src="assets/images/galeri1.jpg">
+                    <img src="assets/images/galeri1.jpg" alt="Suasana Alami Sungai Calendu" loading="lazy">
+                    <div class="galeri-overlay">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </div>
+                </div>
+                <div class="galeri-card" data-src="assets/images/galeri2.jpg">
+                    <img src="assets/images/galeri2.jpg" alt="Kejernihan Air Sungai Calendu" loading="lazy">
+                    <div class="galeri-overlay">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </div>
+                </div>
+                <div class="galeri-card" data-src="assets/images/galeri4.jpg">
+                    <img src="assets/images/galeri4.jpg" alt="Aliran & Bebatuan Sungai Calendu" loading="lazy">
+                    <div class="galeri-overlay">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </div>
+                </div>
+                <div class="galeri-card" data-src="assets/images/galeri6.jpg">
+                    <img src="assets/images/galeri6.jpg" alt="Pemandangan Asri Sungai Calendu" loading="lazy">
+                    <div class="galeri-overlay">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal untuk Galeri -->
+    <div id="lightbox-modal" class="lightbox-modal">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" alt="Preview Galeri Full">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Section Lokasi -->
+    <section id="lokasi" class="section lokasi-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="section-tag"><i class="fa-solid fa-map-pin"></i> Peta Lokasi</span>
+                <h2 class="section-title">Lokasi Sungai Calendu</h2>
+                <div class="section-divider center"></div>
+            </div>
+
+            <div class="lokasi-grid">
+                <div class="lokasi-card-info">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <h4>Alamat</h4>
+                            <p>Kelurahan Onto, Kecamatan Bantaeng, Kabupaten Bantaeng, Sulawesi Selatan.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div>
+                            <h4>Waktu Kunjungan</h4>
+                            <p>Area terbuka untuk umum.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-shield-cat"></i></div>
+                        <div>
+                            <h4>Imbauan Pengunjung</h4>
+                            <p>Mohon bersama-sama menjaga kebersihan dengan tidak membuang sampah ke aliran sungai.</p>
+                        </div>
+                    </div>
+
+                    <a href="https://maps.google.com/?q=Sungai+Calendu+Bantaeng" target="_blank" class="btn-maps">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Buka di Google Maps
+                    </a>
+                </div>
+
+                <div class="lokasi-map-container">
+                    <iframe title="Google Maps Sungai Calendu" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.7490686187693!2d119.96092058560387!3d-5.500026466566904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dbeb3002cb5ec47%3A0xc1e4523929e5ecf!2sSungai%20Calendu!5e1!3m2!1sid!2sid!4v1785513860673!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Laporan Warga -->
+    <section id="laporan" class="section laporan-section">
+        <div class="container">
+            <div class="laporan-wrapper">
+                <div class="laporan-header text-center">
+                    <span class="section-tag tag-white"><i class="fa-solid fa-bullhorn"></i> Aspirasi & Laporan</span>
+                    <h2 class="section-title text-white">Layanan Laporan Warga</h2>
+                    <p class="section-subtitle text-white-80">Sampaikan laporan, masukan, atau kendala terkait kondisi Sungai Calendu secara langsung kepada pengelola Kelurahan Onto.</p>
+                    <div class="section-divider center"></div>
+                </div>
+
+                <div class="form-card">
+                    <form id="form-laporan" name="form-laporan" class="laporan-form">
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="nama"><i class="fa-solid fa-user"></i> Nama Lengkap <span class="required">*</span></label>
+                                <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap Anda" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="kontak"><i class="fa-solid fa-phone"></i> Nomor WhatsApp / HP <span class="optional">(Opsional)</span></label>
+                                <input type="tel" id="kontak" name="kontak" placeholder="08xxxxxxxxxx">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="kategori"><i class="fa-solid fa-tags"></i> Kategori Laporan <span class="required">*</span></label>
+                            <select id="kategori" name="kategori" required>
+                                <option value="" disabled selected>Pilih Kategori Laporan</option>
+                                <option value="Kebersihan & Sampah">🧹 Kebersihan & Sampah</option>
+                                <option value="Saran & Usulan Warga">💡 Saran & Usulan Warga</option>
+                                <option value="Lainnya / Umum">❓ Lainnya / Umum</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="pesan"><i class="fa-solid fa-message"></i> Detail Laporan / Masukan <span class="required">*</span></label>
+                            <textarea id="pesan" name="pesan" rows="6" placeholder="Tuliskan detail laporan, lokasi spesifik, atau masukan Anda di sini..." required></textarea>
+                            <div class="char-count"><span id="char-counter">0</span> karakter</div>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            <i class="fa-solid fa-paper-plane"></i> <span id="btn-submit-text">Kirim Laporan</span>
+                        </button>
+                    </form>
+
+                    <div id="pesan-sukses" class="alert-box alert-success hidden">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <h4>Laporan Berhasil Terkirim!</h4>
+                            <p>Terima kasih atas laporan Anda. Data telah diterima oleh pengelola Kelurahan Onto.</p>
+                        </div>
+                    </div>
+
+                    <div id="pesan-gagal" class="alert-box alert-error hidden">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <div>
+                            <h4>Pengiriman Gagal!</h4>
+                            <p>Terjadi kesalahan koneksi. Silakan periksa jaringan Anda dan coba kembali.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fa-solid fa-water"></i></div>
+                    <div class="logo-wrapper">
+                        <span class="logo-text text-white">Sungai <span>Calendu</span></span>
+                        <span class="logo-subtext">Kelurahan Onto, Bantaeng</span>
+                    </div>
+                </div>
+                <p>Website informasi dan saluran pengaduan warga untuk sungai calendu</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="#beranda"><i class="fa-solid fa-angle-right"></i> Beranda</a></li>
+                    <li><a href="#tentang"><i class="fa-solid fa-angle-right"></i> Tentang</a></li>
+                    <li><a href="#kondisi"><i class="fa-solid fa-angle-right"></i> Kondisi</a></li>
+                    <li><a href="#galeri"><i class="fa-solid fa-angle-right"></i> Galeri</a></li>
+                    <li><a href="#lokasi"><i class="fa-solid fa-angle-right"></i> Lokasi</a></li>
+                    <li><a href="#laporan"><i class="fa-solid fa-angle-right"></i> Lapor Warga</a></li>
+                    <li><a href="admin.html" target="_blank"><i class="fa-solid fa-user-shield"></i> Portal Admin</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 <strong>Sungai Calendu</strong>. Dibuat oleh <span>Mahasiswa KKNT 116 Universitas Hasanuddin</span>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- File JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
