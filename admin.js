@@ -269,7 +269,10 @@ function loadLaporan() {
     if (tbodyMain) tbodyMain.innerHTML = '<tr><td colspan="7" class="text-center">Memuat data laporan...</td></tr>';
 
     return fetch(scriptURL + '?action=getLaporan')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            return res.json();
+        })
         .then(data => {
             if (Array.isArray(data)) {
                 globalLaporanData = data;
@@ -283,7 +286,17 @@ function loadLaporan() {
         })
         .catch(err => {
             console.error('Error load laporan:', err);
-            if (tbodyMain) tbodyMain.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Gagal terhubung ke data laporan.</td></tr>';
+            if (tbodyMain) {
+                tbodyMain.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-muted" style="padding: 24px;">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.8rem; color: #ef4444; margin-bottom: 8px; display: inline-block;"></i><br>
+                            <strong style="color: #1e293b;">Gagal Terhubung ke Data Laporan</strong><br>
+                            <span style="font-size: 0.85rem;">Browser diblokir saat mengambil data dari Google Apps Script. Pastikan akses Web App diatur ke <strong>Anyone (Siapa Saja)</strong> dan matikan AdBlocker jika aktif.</span><br>
+                            <button onclick="loadLaporan()" class="btn-action-sm" style="margin-top: 12px; background: #059669; color: #fff;"><i class="fa-solid fa-rotate"></i> Coba Muat Ulang</button>
+                        </td>
+                    </tr>`;
+            }
         });
 }
 
