@@ -276,8 +276,8 @@
                             </div>
                             
                             <div class="input-group">
-                                <label for="kontak"><i class="fa-solid fa-phone"></i> Nomor WhatsApp / HP <span class="optional">(Opsional)</span></label>
-                                <input type="tel" id="kontak" name="kontak" placeholder="08xxxxxxxxxx">
+                                <label for="kontak"><i class="fa-solid fa-phone"></i> Nomor WhatsApp / HP <span class="required">*</span></label>
+                                <input type="tel" id="kontak" name="kontak" placeholder="08xxxxxxxxxx" required pattern="^[0-9\+\-\s]{8,16}$" title="Masukkan nomor WhatsApp yang valid (contoh: 08123456789)">
                             </div>
                         </div>
 

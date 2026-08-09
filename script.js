@@ -146,8 +146,14 @@ function initFormLaporan() {
             const kontakVal = form.kontak.value.trim();
             const kategoriVal = form.kategori ? form.kategori.value : 'Lainnya / Umum';
 
-            if (!namaVal || !pesanVal || !kategoriVal) {
-                alert('Silakan isi Nama Lengkap, Kategori Laporan, dan Detail Laporan Anda.');
+            if (!namaVal || !kontakVal || !pesanVal || !kategoriVal) {
+                alert('Silakan isi Nama Lengkap, Nomor WhatsApp, Kategori Laporan, dan Detail Laporan Anda.');
+                return;
+            }
+
+            const cleanKontak = kontakVal.replace(/\D/g, '');
+            if (cleanKontak.length < 8) {
+                alert('Silakan masukkan nomor WhatsApp yang valid (minimal 8 digit angka, contoh: 08123456789).');
                 return;
             }
 
@@ -162,6 +168,13 @@ function initFormLaporan() {
                 pesan: pesanVal,
                 waktu: new Date().toISOString()
             };
+
+            // Simpan salinan di cache lokal sebagai cadangan
+            try {
+                let localLaporan = JSON.parse(localStorage.getItem('calendu_local_submitted_laporan') || '[]');
+                localLaporan.push(payload);
+                localStorage.setItem('calendu_local_submitted_laporan', JSON.stringify(localLaporan));
+            } catch (errLocal) {}
 
             fetch(scriptURL, {
                 method: 'POST',

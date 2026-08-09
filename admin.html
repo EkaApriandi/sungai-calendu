@@ -267,11 +267,9 @@
                             <i class="fa-solid fa-filter"></i>
                             <select id="filterKategoriLaporan" onchange="renderLaporanTable()">
                                 <option value="all">Semua Kategori</option>
-                                <option value="Kebersihan">Kebersihan & Sampah</option>
-                                <option value="Banjir">Banjir & Luapan Air</option>
-                                <option value="Infrastruktur">Fasilitas & Infrastruktur</option>
-                                <option value="Keamanan">Keamanan & Ketertiban</option>
-                                <option value="Lainnya">Lainnya / Umum</option>
+                                <option value="Kebersihan">🧹 Kebersihan & Sampah</option>
+                                <option value="Saran">💡 Saran & Usulan Warga</option>
+                                <option value="Lainnya">❓ Lainnya / Umum</option>
                             </select>
                         </div>
 
@@ -478,11 +476,20 @@
                         </ul>
                         
                         <div class="system-reset-box margin-top-20">
-                            <h4><i class="fa-solid fa-triangle-exclamation"></i> Refresh Sistem Lokal</h4>
-                            <p class="text-sm text-muted">Jika data tampilan terasa lambat atau tidak berubah, klik tombol di bawah untuk menyegarkan sistem lokal browser.</p>
-                            <button onclick="clearSystemCache()" class="btn-outline margin-top-10">
-                                <i class="fa-solid fa-broom"></i> Bersihkan Cache Browser
-                            </button>
+                            <h4><i class="fa-solid fa-plug"></i> Diagnosis Koneksi Google Apps Script</h4>
+                            <p class="text-sm text-muted">Jika laporan tidak bisa dimuat karena browser diblokir atau error CORS:</p>
+                            <ol class="text-sm text-muted" style="margin: 8px 0 12px 18px; padding: 0;">
+                                <li>Pastikan AdBlocker / Shield browser dinonaktifkan untuk situs ini.</li>
+                                <li>Di Google Apps Script: klik <strong>Deploy &gt; Manage Deployments &gt; Edit</strong>, atur <em>Who has access</em> ke <strong>Anyone</strong>.</li>
+                            </ol>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <a href="https://script.google.com/macros/s/AKfycbxEjkaj0UHIkzV9oyiVeiM2AWwwlkatVwviLpP_V8NoatnXlnCVR-IMZdK0mszPWqlo/exec?action=getLaporan" target="_blank" class="btn-outline text-sm" style="text-decoration: none;">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Tes Link Web App API
+                                </a>
+                                <button onclick="clearSystemCache()" class="btn-outline text-sm">
+                                    <i class="fa-solid fa-broom"></i> Bersihkan Cache Browser
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

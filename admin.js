@@ -268,17 +268,49 @@ function loadLaporan() {
     if (tbodyOverview) tbodyOverview.innerHTML = '<tr><td colspan="6" class="text-center">Memuat data...</td></tr>';
     if (tbodyMain) tbodyMain.innerHTML = '<tr><td colspan="7" class="text-center">Memuat data laporan...</td></tr>';
 
-    return fetch(scriptURL + '?action=getLaporan')
+    const timestamp = new Date().getTime();
+    const fetchUrl = scriptURL + (scriptURL.includes('?') ? '&' : '?') + 'action=getLaporan&t=' + timestamp;
+
+    return fetch(fetchUrl)
         .then(res => {
             if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
             return res.json();
         })
         .then(data => {
             if (Array.isArray(data)) {
-                globalLaporanData = data;
+                let combinedData = [...data];
+                
+                // Gabungkan dengan laporan lokal yang dikirim dari browser ini jika belum masuk di server
+                try {
+                    const localSubmissions = JSON.parse(localStorage.getItem('calendu_local_submitted_laporan') || '[]');
+                    localSubmissions.forEach(localItem => {
+                        const exists = combinedData.some(d => String(d.nama) === String(localItem.nama) && String(d.pesan) === String(localItem.pesan) && d.waktu === localItem.waktu);
+                        if (!exists) {
+                            combinedData.push({
+                                row: 'Lokal',
+                                waktu: localItem.waktu,
+                                nama: localItem.nama,
+                                kontak: localItem.kontak,
+                                kategori: localItem.kategori,
+                                pesan: localItem.pesan,
+                                status: 'Menunggu'
+                            });
+                        }
+                    });
+                } catch (e) {}
+
+                globalLaporanData = combinedData;
+                localStorage.setItem('calendu_cached_laporan', JSON.stringify(combinedData));
                 updateOverviewStats();
                 renderLaporanTable();
                 renderOverviewTable();
+
+                const dbBadge = document.getElementById('db-status-badge');
+                if (dbBadge) {
+                    dbBadge.className = 'badge-status-online';
+                    dbBadge.style.background = '';
+                    dbBadge.innerHTML = '<i class="fa-solid fa-circle"></i> Terhubung';
+                }
             } else {
                 globalLaporanData = [];
                 updateOverviewStats();
@@ -286,18 +318,199 @@ function loadLaporan() {
         })
         .catch(err => {
             console.error('Error load laporan:', err);
+
+            // Coba ambil dari cache lokal atau salinan laporan yang pernah dikirim
+            let cachedList = [];
+            try {
+                const cachedStr = localStorage.getItem('calendu_cached_laporan');
+                if (cachedStr) {
+                    cachedList = JSON.parse(cachedStr);
+                }
+                const localSubmissions = JSON.parse(localStorage.getItem('calendu_local_submitted_laporan') || '[]');
+                localSubmissions.forEach(localItem => {
+                    const exists = cachedList.some(d => String(d.nama) === String(localItem.nama) && String(d.pesan) === String(localItem.pesan) && d.waktu === localItem.waktu);
+                    if (!exists) {
+                        cachedList.push({
+                            row: 'Lokal',
+                            waktu: localItem.waktu,
+                            nama: localItem.nama,
+                            kontak: localItem.kontak,
+                            kategori: localItem.kategori,
+                            pesan: localItem.pesan,
+                            status: 'Menunggu'
+                        });
+                    }
+                });
+            } catch(e) {}
+
+            if (Array.isArray(cachedList) && cachedList.length > 0) {
+                globalLaporanData = cachedList;
+                updateOverviewStats();
+                renderLaporanTable();
+                renderOverviewTable();
+                showToast('Koneksi Google Script terganggu. Menampilkan data dari simpanan cache lokal.', 'warning');
+
+                const dbBadge = document.getElementById('db-status-badge');
+                if (dbBadge) {
+                    dbBadge.className = 'badge-status-offline';
+                    dbBadge.style.background = '#f59e0b';
+                    dbBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Mode Cache Lokal';
+                }
+                return;
+            }
+
+            const dbBadge = document.getElementById('db-status-badge');
+            if (dbBadge) {
+                dbBadge.className = 'badge-status-offline';
+                dbBadge.style.background = '#ef4444';
+                dbBadge.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Terputus';
+            }
+
             if (tbodyMain) {
                 tbodyMain.innerHTML = `
                     <tr>
-                        <td colspan="7" class="text-center text-muted" style="padding: 24px;">
-                            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.8rem; color: #ef4444; margin-bottom: 8px; display: inline-block;"></i><br>
-                            <strong style="color: #1e293b;">Gagal Terhubung ke Data Laporan</strong><br>
-                            <span style="font-size: 0.85rem;">Browser diblokir saat mengambil data dari Google Apps Script. Pastikan akses Web App diatur ke <strong>Anyone (Siapa Saja)</strong> dan matikan AdBlocker jika aktif.</span><br>
-                            <button onclick="loadLaporan()" class="btn-action-sm" style="margin-top: 12px; background: #059669; color: #fff;"><i class="fa-solid fa-rotate"></i> Coba Muat Ulang</button>
+                        <td colspan="7" class="text-center text-muted" style="padding: 28px 16px;">
+                            <div style="max-width: 580px; margin: 0 auto;">
+                                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.2rem; color: #ef4444; margin-bottom: 12px; display: inline-block;"></i><br>
+                                <strong style="color: #1e293b; font-size: 1.1rem;">Gagal Terhubung ke Data Laporan</strong>
+                                <p style="font-size: 0.88rem; color: #64748b; margin: 8px 0 16px; line-height: 1.5;">
+                                    Browser atau jaringan memblokir pengambilan data dari Google Apps Script Web App.
+                                </p>
+
+                                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; text-align: left; margin-bottom: 16px; font-size: 0.85rem; color: #334155;">
+                                    <strong><i class="fa-solid fa-wrench"></i> Panduan Solusi Lengkap:</strong>
+                                    <ol style="margin: 6px 0 0 18px; padding: 0; line-height: 1.6;">
+                                        <li>Bila membuka via file langsung (<code>file:///...</code>), disarankan menggunakan web server lokal (Live Server / localhost).</li>
+                                        <li>Matikan <strong>AdBlocker / Brave Shields</strong> pada halaman ini.</li>
+                                        <li>Pastikan setelan akses Web App Google Apps Script diatur ke <strong>"Anyone" (Siapa Saja)</strong>.</li>
+                                        <li>Klik tombol <em>"Buka Link API Direct"</em> di bawah ini untuk verifikasi akses server.</li>
+                                    </ol>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                    <button onclick="loadLaporan()" class="btn-action-sm" style="background: #059669; color: #fff; padding: 8px 16px; font-size: 0.88rem;">
+                                        <i class="fa-solid fa-rotate"></i> Coba Muat Ulang
+                                    </button>
+                                    <a href="${scriptURL}?action=getLaporan" target="_blank" class="btn-action-sm" style="background: #2563eb; color: #fff; text-decoration: none; padding: 8px 16px; font-size: 0.88rem;">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Link API Direct
+                                    </a>
+                                </div>
+                            </div>
                         </td>
                     </tr>`;
             }
+
+            if (tbodyOverview) {
+                tbodyOverview.innerHTML = `<tr><td colspan="6" class="text-center text-muted"><i class="fa-solid fa-plug-circle-xmark"></i> Gagal memuat data laporan. Buka menu Laporan Warga untuk solusi koneksi.</td></tr>`;
+            }
         });
+}
+
+function updateOverviewStats() {
+    const total = globalLaporanData.length;
+    let pending = 0;
+    let selesai = 0;
+
+    globalLaporanData.forEach(row => {
+        const st = row.status ? String(row.status).toLowerCase() : '';
+        if (st === 'selesai') {
+            selesai++;
+        } else {
+            pending++;
+        }
+    });
+
+    document.getElementById('stat-total-laporan').textContent = total;
+    document.getElementById('stat-menunggu-laporan').textContent = pending;
+    document.getElementById('stat-selesai-laporan').textContent = selesai;
+    
+    const badgePending = document.getElementById('badge-pending-count');
+    if (badgePending) badgePending.textContent = pending;
+}
+
+function renderLaporanTable() {
+    const tbody = document.querySelector('#tabel-laporan tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    const selectedKat = document.getElementById('filterKategoriLaporan') ? document.getElementById('filterKategoriLaporan').value : 'all';
+
+    let filtered = globalLaporanData.filter(row => {
+        const rowStatus = row.status ? String(row.status).toLowerCase() : '';
+        if (currentFilterStatus === 'menunggu' && rowStatus === 'selesai') return false;
+        if (currentFilterStatus === 'selesai' && rowStatus !== 'selesai') return false;
+        
+        if (selectedKat !== 'all') {
+            const rowKat = (row.kategori ? String(row.kategori) : '').toLowerCase();
+            if (!rowKat.includes(selectedKat.toLowerCase())) return false;
+        }
+
+        return true;
+    });
+
+    const searchQuery = document.getElementById('searchLaporan') ? document.getElementById('searchLaporan').value.toLowerCase().trim() : '';
+    if (searchQuery) {
+        filtered = filtered.filter(row => {
+            const namaStr = row.nama ? String(row.nama).toLowerCase() : '';
+            const kontakStr = row.kontak ? String(row.kontak).toLowerCase() : '';
+            const pesanStr = row.pesan ? String(row.pesan).toLowerCase() : '';
+            const katStr = row.kategori ? String(row.kategori).toLowerCase() : '';
+
+            return namaStr.includes(searchQuery) ||
+                   kontakStr.includes(searchQuery) ||
+                   pesanStr.includes(searchQuery) ||
+                   katStr.includes(searchQuery);
+        });
+    }
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Belum ada laporan yang sesuai pencarian.</td></tr>';
+        return;
+    }
+
+    [...filtered].reverse().forEach((row, index) => {
+        try {
+            const dateStr = row.waktu ? formatDate(row.waktu) : '-';
+            const isSelesai = row.status && String(row.status).toLowerCase() === 'selesai';
+            const statusBadge = isSelesai 
+                ? `<span class="status-badge badge-success"><i class="fa-solid fa-circle-check"></i> Selesai</span>`
+                : `<span class="status-badge badge-warning"><i class="fa-solid fa-clock"></i> Belum Selesai</span>`;
+
+            const kontakDisplay = (row.kontak !== undefined && row.kontak !== null && String(row.kontak).trim() !== '') ? String(row.kontak) : '-';
+            const waFormatted = formatWhatsAppNumber(row.kontak);
+            const waBtn = waFormatted 
+                ? `<a href="https://wa.me/${waFormatted}?text=${encodeURIComponent('Halo Bpk/Ibu ' + (row.nama || 'Warga') + ', kami dari Pengelola Sungai Calendu Kelurahan Onto ingin menindaklanjuti laporan Anda.')}" target="_blank" class="btn-action-sm btn-wa-sm" title="Hubungi via WhatsApp"><i class="fa-brands fa-whatsapp"></i> WA</a>`
+                : '';
+
+            const categoryTag = row.kategori ? escapeHtml(String(row.kategori)) : 'Lainnya / Umum';
+            const categoryBadge = `<span class="status-badge badge-category"><i class="fa-solid fa-tag"></i> ${categoryTag}</span>`;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${dateStr}</td>
+                <td><strong>${escapeHtml(String(row.nama || '-'))}</strong><br><small class="text-muted">${escapeHtml(kontakDisplay)}</small></td>
+                <td>${categoryBadge}</td>
+                <td>${truncateText(escapeHtml(String(row.pesan || '-')), 60)}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <div class="action-buttons-group">
+                        <button onclick="ubahStatusLaporan(${row.row}, '${isSelesai ? 'Selesai' : 'Belum Selesai'}')" class="btn-action-sm" title="Ubah Status Laporan">
+                            <i class="fa-solid fa-arrows-rotate"></i> Ubah Status
+                        </button>
+                        <button onclick="openDetailModal(${JSON.stringify(row).replace(/"/g, '&quot;')})" class="btn-action-sm" title="Lihat Detail">
+                            <i class="fa-solid fa-eye"></i> Detail
+                        </button>
+                        ${waBtn}
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        } catch (errRow) {
+            console.error('Error render baris laporan:', errRow, row);
+        }
+    });
 }
 
 function updateOverviewStats() {
@@ -986,10 +1199,12 @@ function formatDate(isoStr) {
 }
 
 function formatWhatsAppNumber(phone) {
-    if (!phone) return '';
-    let cleaned = phone.replace(/\D/g, '');
+    if (phone === null || phone === undefined || phone === '') return '';
+    let cleaned = String(phone).replace(/\D/g, '');
     if (cleaned.startsWith('0')) {
         cleaned = '62' + cleaned.substring(1);
+    } else if (cleaned.startsWith('8')) {
+        cleaned = '62' + cleaned;
     }
     return cleaned;
 }
@@ -1024,13 +1239,19 @@ function exportLaporanToCSV() {
     
     globalLaporanData.forEach(row => {
         const dateFormatted = row.waktu ? formatDate(row.waktu) : '';
+        const namaStr = String(row.nama || '').replace(/"/g, '""');
+        const kontakStr = String(row.kontak || '').replace(/"/g, '""');
+        const katStr = String(row.kategori || 'Umum').replace(/"/g, '""');
+        const pesanStr = String(row.pesan || '').replace(/"/g, '""').replace(/\n/g, ' ');
+        const statusStr = String(row.status || 'Belum Selesai').replace(/"/g, '""');
+
         const line = [
             `"${dateFormatted}"`,
-            `"${(row.nama || '').replace(/"/g, '""')}"`,
-            `"${(row.kontak || '').replace(/"/g, '""')}"`,
-            `"${(row.kategori || 'Umum').replace(/"/g, '""')}"`,
-            `"${(row.pesan || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
-            `"${row.status || 'Belum Selesai'}"`
+            `"${namaStr}"`,
+            `"${kontakStr}"`,
+            `"${katStr}"`,
+            `"${pesanStr}"`,
+            `"${statusStr}"`
         ].join(',');
         csvContent += line + '\n';
     });
